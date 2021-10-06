@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ElectronicsStore.Models.CartItem>
+
+    @{
+    ViewData["Title"] = "Index";
+    }
+
+    <h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreItem.ProductCode)
+                </th>
+                <th>
+                    Photo
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreItem.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreItem.Price)
+                </th>
+                <th class="col-lg-2">
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StoreItem.itemLocation)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StoreItem.ProductCode)
+                </td>
+                <td>
+                    <img class="card-img-top mb-5 mb-md-0" src="~/@item.StoreItem.ImagePath" alt="..." />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StoreItem.Name)
+                </td>
+                <td>
+                    @item.StoreItem.GetPrice()
+                </td>
+                <td>
+                    <a class="btn btn-primary">-</a>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                    <a class="btn btn-primary">+</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StoreItem.itemLocation)
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>

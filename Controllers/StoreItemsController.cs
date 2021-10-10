@@ -65,7 +65,7 @@ namespace ElectronicsStore.Controllers
             {
                 if (storeItemVM.FormFile.Length > 0)
                 {
-                    var fileName = getUniqueFileName(storeItemVM.FormFile.FileName);
+                    var fileName = GetUniqueFileName(storeItemVM.FormFile.FileName);
                     var uploads = Path.Combine(_hostEnvironment.WebRootPath, "images", "itemImages");
                     var filePath = Path.Combine(uploads, fileName);
 
@@ -95,8 +95,10 @@ namespace ElectronicsStore.Controllers
             {
                 return NotFound();
             }
-            StoreItemViewModel storeItemVM = new StoreItemViewModel();
-            storeItemVM.StoreItem = storeItem;
+            StoreItemViewModel storeItemVM = new()
+            {
+                StoreItem = storeItem
+            };
             return View(storeItemVM);
         }
 
@@ -118,7 +120,7 @@ namespace ElectronicsStore.Controllers
                 {
                     if (storeItemVM.FormFile.Length > 0)
                     {
-                        var fileName = getUniqueFileName(storeItemVM.FormFile.FileName);
+                        var fileName = GetUniqueFileName(storeItemVM.FormFile.FileName);
                         var uploads = Path.Combine(_hostEnvironment.WebRootPath, "images", "itemImages");
                         System.IO.File.Delete(Path.Combine(_hostEnvironment.WebRootPath,storeItemVM.StoreItem.ImagePath));
                         var filePath = Path.Combine(uploads, fileName);
@@ -181,7 +183,8 @@ namespace ElectronicsStore.Controllers
         {
             return _context.StoreItem.Any(e => e.Id == id);
         }
-    string getUniqueFileName(string fileName)
+
+        static string GetUniqueFileName(string fileName)
         {
         return Guid.NewGuid().ToString().Substring(0,4) + Path.GetExtension(fileName);
         }

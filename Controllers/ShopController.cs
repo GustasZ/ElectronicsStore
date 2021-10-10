@@ -27,7 +27,7 @@ namespace ElectronicsStore.Controllers
         {
             if (id == null)
                 return NotFound();
-            var item = await _context.StoreItem.FirstOrDefaultAsync(m => m.Id == id);
+            var item = await _context.StoreItem.FindAsync(id);
             if (item == null)
                 return NotFound();
             return View(item);
@@ -36,17 +36,16 @@ namespace ElectronicsStore.Controllers
         [Authorize]
         public async Task<IActionResult> AddToCart(int itemId, int quantity)
         {
-            var user = await _userManager.GetUserAsync(User);
-            
+            var user = await _userManager.Users.Include(u => u.Cart).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if(quantity == 0)
+                throw(new Exception());
             var cartItem = new CartItem();
-            var item = await _context.StoreItem.FirstOrDefaultAsync(m => m.Id == itemId);
+            var item = await _context.StoreItem.FindAsync(itemId);
             cartItem.StoreItem = item;
             cartItem.Quantity = quantity;
             cartItem.DateCreated = DateTime.UtcNow;
             if (user.Cart == null)
                 user.Cart = new Cart();
-            if (user.Cart.CartItems == null)
-                user.Cart.CartItems = new List<CartItem>();
             user.Cart.CartItems.Add(cartItem);
            // cartItem.ShoppingUserId = userId;
           //  if (user.CartItems == null)
@@ -54,19 +53,40 @@ namespace ElectronicsStore.Controllers
        //     user.CartItems.Add(cartItem);
             //_context.Update(cartItem);
             _context.Update(user);
-            _context.SaveChanges();
-            return View(RedirectToAction("Item",itemId));
+            await _context.SaveChangesAsync();
+            return RedirectToAction("MyCart");
         }
 
         [Authorize]
         public async Task<IActionResult> MyCart()
         {
-            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s=>s.CartItems).ThenInclude(i=>i.StoreItem).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s=>s.CartItems).ThenInclude(i=>i.StoreItem)
+                .SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user.Cart == null)
+                user.Cart = new Cart();
             var cart = user.Cart;
-            var cartItems = cart.CartItems;
-            if (cartItems == null)
-                cartItems = new List<CartItem>();
-            return View(cartItems);
+            return View(cart);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var cartItem = user.Cart.CartItems.Where(m => m.Id == id).Single();
+            _context.Remove(cartItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("MyCart");
+        }
+
+        public async Task<IActionResult> ChangeOrderQuantity(int amount, int itemId)
+        {
+            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var cartItem = user.Cart.CartItems.Where(m => m.Id == itemId).Single();
+            cartItem.Quantity += amount;
+            _context.Update(cartItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("MyCart");
         }
 
     }

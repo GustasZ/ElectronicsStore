@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ElectronicsStore.Models.CartItem>
+﻿@model ElectronicsStore.Models.Cart
 
     @{
     ViewData["Title"] = "Index";
@@ -13,33 +13,35 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.StoreItem.ProductCode)
+                    @Html.DisplayNameFor(model => model.CartItems[0].StoreItem.ProductCode)
                 </th>
                 <th>
                     Photo
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.StoreItem.Name)
+                    @Html.DisplayNameFor(model => model.CartItems[0].StoreItem.Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.StoreItem.Price)
+                    @Html.DisplayNameFor(model => model.CartItems[0].StoreItem.Price)
                 </th>
                 <th class="col-lg-2">
-                    @Html.DisplayNameFor(model => model.Quantity)
+                    @Html.DisplayNameFor(model => model.CartItems[0].Quantity)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.StoreItem.itemLocation)
+                    @Html.DisplayNameFor(model => model.CartItems[0].StoreItem.itemLocation)
+                </th>
+                <th>
                 </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model) {
+            @foreach (var item in Model.CartItems) {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.StoreItem.ProductCode)
                 </td>
                 <td>
-                    <img class="card-img-top mb-5 mb-md-0" src="~/@item.StoreItem.ImagePath" alt="..." />
+                    <img class="card-img-top mb-5 mb-md-0" style="height: 50px" src="~/@item.StoreItem.ImagePath" alt="..." />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StoreItem.Name)
@@ -48,14 +50,40 @@
                     @item.StoreItem.GetPrice()
                 </td>
                 <td>
-                    <a class="btn btn-primary">-</a>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                    <a class="btn btn-primary">+</a>
+                    <div class="row">
+                        @if (item.Quantity == 1)
+                        {
+                            <form asp-action="Delete">
+                                <input type="hidden" asp-for="@item.Id" name="id" />
+                                <input type="submit" value="-" class="btn btn-primary" />
+                            </form>
+                        }
+                        else
+                        {
+                            <a asp-action="ChangeOrderQuantity" asp-route-amount="-1" asp-route-itemid="@item.Id" class="btn btn-primary">-</a>
+                        }
+                    <div class="ml-4 mr-4 font-weight-bold">@Html.DisplayFor(modelItem => item.Quantity)</div>
+                        <a asp-action="ChangeOrderQuantity" asp-route-amount="1" asp-route-itemid="@item.Id" class="btn btn-primary">+</a>
+                    </div>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StoreItem.itemLocation)
+                </td>
+                <td>
+                    <form asp-action="Delete">
+                        <input type="hidden" asp-for="@item.Id" name="id"/>
+                        <input type="submit" value="Delete" class="btn btn-danger" /> 
+                    </form>
                 </td>
             </tr>
             }
         </tbody>
     </table>
+    <div class="row">
+        <div class="col text-left">
+            <h2>Total: @Model.GetTotal()</h2>
+        </div>
+        <div class="col text-right">
+            <button type="button" class="btn btn-success">Order</button>
+        </div>
+        </div>

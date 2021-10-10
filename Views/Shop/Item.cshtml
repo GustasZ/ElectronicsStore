@@ -27,17 +27,18 @@
                     <div class="small mb-1"></div>
                     <h1 class="display-5 fw-bolder">@Html.DisplayFor(model => model.Name);</h1>
                     <ul class="list-unstyled fs-5 mb-5">
-                            <b><li class="text-decoration-line-through">@Model.GetPrice()</li></b>
+                            <li class="text-decoration-line-through font-weight-bold">@Model.GetPrice()</li>
                         <li class="text-decoration-line-through">Available: @Model.GetQuantity()</li>
                         <li class="text-decoration-line-through">Location: @Html.DisplayFor(model => model.itemLocation)</li>
                     </ul>
                     <p class="lead">@Html.DisplayFor(model => model.Description)</p>
                     <div class="d-flex">
-                        <input class="form-control text-center me-3" asp-route="quantity" type="num" value="1" style="max-width: 3rem" />
-                        <a asp-action="AddToCart" asp-route-quantity="1" asp-route-itemId="@Model.Id" class="btn btn-outline-dark flex-shrink-0" type="button">
+                        <form asp-action="AddToCart">
+                            <input type="hidden" asp-for="@Model.Id" name="itemId" />
+                            <input type="number" name="Quantity" />
                             <i class="bi-cart-fill me-1"></i>
-                            Add to cart
-                        </a>
+                            <input type="submit" value="Add to cart" class="btn btn-outline-dark flex-shrink-0" />
+                        </form>
                     </div>
                 </div>
             </div>

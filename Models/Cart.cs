@@ -9,7 +9,7 @@ namespace ElectronicsStore.Models
     {
         public int Id { get; set; }
 
-        public List<CartItem> CartItems { get; set; }
+        public List<CartItem> CartItems { get; set; } = new List<CartItem>(); // ??????????
 
         public string ShoppingUserId { get; set; }
         public ShoppingUser ShoppingUser { get; set; }
@@ -20,7 +20,7 @@ namespace ElectronicsStore.Models
         {
             int total = 0;
             foreach (var item in CartItems)
-                total += item.StoreItem.Price;
+                total += item.StoreItem.Price * item.Quantity;
             Total = total;
             return $"{Total / 100}.{Total % 100}€"; // displaying 12345 as 123.45€
         }

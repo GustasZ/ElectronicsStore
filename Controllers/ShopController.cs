@@ -47,6 +47,13 @@ namespace ElectronicsStore.Controllers
             if (user.Cart == null)
                 user.Cart = new Cart();
             user.Cart.CartItems.Add(cartItem);
+
+            int totalSum = 0;
+            foreach(var cItem in user.Cart.CartItems)
+            {
+                totalSum += cItem.StoreItem.Price * cItem.Quantity;
+            }
+            user.Cart.Total = totalSum;
            // cartItem.ShoppingUserId = userId;
           //  if (user.CartItems == null)
     //            user.CartItems = new List<CartItem>();
@@ -81,10 +88,36 @@ namespace ElectronicsStore.Controllers
 
         public async Task<IActionResult> ChangeOrderQuantity(int amount, int itemId)
         {
-            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).ThenInclude(k => k.StoreItem).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
             var cartItem = user.Cart.CartItems.Where(m => m.Id == itemId).Single();
+            
             cartItem.Quantity += amount;
+
+            user.Cart.Total += amount * cartItem.StoreItem.Price;
+
             _context.Update(cartItem);
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("MyCart");
+        }
+
+        public async Task<IActionResult> ConfirmOrder(int id)
+        {
+            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var cart = user.Cart;
+            Order order = new()
+            {
+                CartItems = cart.CartItems,
+                ShoppingUserId = cart.ShoppingUserId,
+                ShoppingUser = cart.ShoppingUser,
+                Total = cart.Total,
+                OrderStatus = OrderStatusEnum.Accepted
+            };
+
+            _context.Remove(user.Cart);
+            user.Cart = new Cart();
+            user.Orders.Add(order);
+            _context.Update(user);
             await _context.SaveChangesAsync();
             return RedirectToAction("MyCart");
         }

@@ -35,17 +35,19 @@
                 {
                     <div class="col mb-5">
                         <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="~/@item.ImagePath" alt="450x300..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">@item.Name</h5>
-                                    <!-- Product price-->
-                                    @item.GetPrice()
+                            <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
+                                <!-- Product image-->
+                                <img class="card-img-top" src="~/@item.ImagePath" alt="450x300..." />
+                                <!-- Product details-->
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <h5 class="fw-bolder">@item.Name</h5>
+                                        <!-- Product price-->
+                                        @item.GetPrice()
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to Cart</a></div>

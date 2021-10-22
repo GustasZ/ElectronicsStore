@@ -1,0 +1,107 @@
+﻿@model ElectronicsStore.Models.CheckoutViewModel
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="~/css/floating.css" media="screen">
+</head>
+<body class="hold-transition">
+    <div class="wrapper">
+        <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Shipping Information</h3>
+                                </div>
+                                <div class="card-body">
+                                    <form asp-action="Create">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="ShippingAddress.Country" class="control-label"></label>
+                                            <select asp-for="ShippingAddress.Country" asp-items="Html.GetEnumSelectList<CountryEnum>()" class="form-control">
+                                                <option selected="selected" value="">Please select</option>
+                                            </select>
+                                            <span asp-validation-for="ShippingAddress.Country" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-label-group col">
+                                                <input type="text" asp-for="ShippingAddress.FirstName" class="form-control" placeholder="First Name" />
+                                                <label asp-for="ShippingAddress.FirstName">First Name</label>
+                                                <span asp-validation-for="ShippingAddress.FirstName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-label-group col">
+                                                <input type="text" asp-for="ShippingAddress.LastName" class="form-control" placeholder="Last Name" />
+                                                <label asp-for="ShippingAddress.LastName">Last Name</label>
+                                                <span asp-validation-for="ShippingAddress.LastName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-label-group">
+                                            <input type="text" asp-for="ShippingAddress.Address" class="form-control" placeholder="Address" />
+                                            <label asp-for="ShippingAddress.Address">Address</label>
+                                            <span asp-validation-for="ShippingAddress.Address" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-label-group">
+                                            <input type="text" asp-for="ShippingAddress.Apartment" class="form-control" placeholder="Apartment" />
+                                            <label asp-for="ShippingAddress.Apartment">Apartment</label>
+                                            <span asp-validation-for="ShippingAddress.Apartment" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-label-group col">
+                                                <input type="text" asp-for="ShippingAddress.City" class="form-control" placeholder="City" />
+                                                <label asp-for="ShippingAddress.City">City</label>
+                                                <span asp-validation-for="ShippingAddress.City" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-label-group col">
+                                                <input type="text" asp-for="ShippingAddress.PostalCode" class="form-control" placeholder="Postal Code" />
+                                                <label asp-for="ShippingAddress.PostalCode">Postal Code</label>
+                                                <span asp-validation-for="ShippingAddress.PostalCode" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-label-group">
+                                            <input type="text" asp-for="ShippingAddress.PhoneNumber" class="form-control" placeholder="Phone Number" />
+                                            <label asp-for="ShippingAddress.PhoneNumber">Phone Number</label>
+                                            <span asp-validation-for="ShippingAddress.PhoneNumber" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input asp-action="ConfirmCheckout" type="submit" value="Create" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Your Order</h3>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                            @foreach (var item in Model.Cart.CartItems)
+                                            {
+                                <tr>
+                                    <th scope="row">
+                                        <img style="height: 50px" src="~/@item.StoreItem.ImagePath" />  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            @item.Quantity
+                                        </span>
+                                    </th>
+                                    <th scope="row">@item.StoreItem.Name</th>
+                                    <th scope="row">@item.GetPrice()</th>
+                                </tr>}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="card-footer">
+                                    Total = @Model.Cart.GetTotal()
+                                </div>
+                                @*<form asp-action="ConfirmCheckout">
+        <input type="hidden" asp-for="@Model.Id" name="id"/>
+                                <input type="submit" value="Confirm Order" class="btn btn-success" />
+                                </form>*@
+                            </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</body>

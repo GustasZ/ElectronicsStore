@@ -16,5 +16,11 @@ namespace ElectronicsStore.Models
 
         public int CartId { get; set; }
         public Cart Cart { get; set; }
+
+        public string GetPrice()
+        {
+        //    var totalPrice = StoreItem.Price * Quantity;
+            return $"{StoreItem.Price / 100}.{StoreItem.Price % 100}€"; // displaying 12345 as 123.45€
+        }
     }
 }

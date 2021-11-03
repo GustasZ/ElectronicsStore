@@ -84,9 +84,12 @@
             <h2>Total: @Model.GetTotal()</h2>
         </div>
         <div class="col text-right">
-            <form asp-action="ConfirmOrder">
-                <input type="hidden" asp-for="@Model.Id" name="id"/>
-                <input type="submit" value="Order" class="btn btn-success"/>
+            <form asp-action="Checkout" asp-controller="Shop">
+                <input type="submit" value="Checkout" class="btn btn-success" />
             </form>
+            @*<form asp-action="GoCheckout">
+            <input type="hidden" asp-for="@Model.Id" name="id"/>
+            <input type="submit" value="Order" class="btn btn-success"/>
+        </form>*@
         </div>
         </div>

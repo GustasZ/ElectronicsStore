@@ -3,15 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ElectronicsStore.Data.Migrations
 {
-    public partial class OrderTable : Migration
+    public partial class Orders : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "itemLocation",
-                table: "StoreItem",
-                newName: "ItemLocation");
-
             migrationBuilder.CreateTable(
                 name: "ShippingAddress",
                 columns: table => new
@@ -39,8 +34,8 @@ namespace ElectronicsStore.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShippingAddressId = table.Column<int>(type: "int", nullable: true),
                     ShoppingUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ShippingAddressId = table.Column<int>(type: "int", nullable: true),
                     Total = table.Column<int>(type: "int", nullable: false),
                     OrderStatus = table.Column<int>(type: "int", nullable: false)
                 },
@@ -68,6 +63,7 @@ namespace ElectronicsStore.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StoreItemId = table.Column<int>(type: "int", nullable: true),
                     OrderId = table.Column<int>(type: "int", nullable: true)
@@ -120,11 +116,6 @@ namespace ElectronicsStore.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ShippingAddress");
-
-            migrationBuilder.RenameColumn(
-                name: "ItemLocation",
-                table: "StoreItem",
-                newName: "itemLocation");
         }
     }
 }

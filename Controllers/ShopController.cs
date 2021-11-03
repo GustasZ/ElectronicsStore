@@ -101,14 +101,40 @@ namespace ElectronicsStore.Controllers
             return RedirectToAction("MyCart");
         }
 
-        public async Task<IActionResult> ConfirmOrder(int id)
+        public async Task<IActionResult> Checkout()
         {
-            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).ThenInclude(i => i.StoreItem)
+    .SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user.Cart == null)
+                user.Cart = new Cart();
             var cart = user.Cart;
+            CheckoutViewModel viewModel = new();
+            viewModel.Cart = cart;
+            return View(viewModel);
+        }
+        public async Task<IActionResult> ConfirmCheckout(CheckoutViewModel checkoutViewModel)
+        {
+             var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(s => s.CartItems).ThenInclude(cartItem => cartItem.StoreItem).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            // var cart = user.Cart;
+          //  var user = await _userManager.Users.Include(u => u.Cart).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var cart = user.Cart;
+            List<OrderItem> orderItems = new();
+            foreach(var cItem in cart.CartItems)
+            {
+                orderItems.Add(new OrderItem
+                {
+                    DateCreated = DateTime.Now,
+                    Quantity = cItem.Quantity,
+                    StoreItem = cItem.StoreItem,
+                    Price = cItem.StoreItem.Price
+                });
+            }
+
             Order order = new()
             {
-                CartItems = cart.CartItems,
-                ShoppingUserId = cart.ShoppingUserId,
+                OrderItems = orderItems,
+                ShippingAddress = checkoutViewModel.ShippingAddress,
+                //ShoppingUserId = cart.ShoppingUserId,
                 ShoppingUser = cart.ShoppingUser,
                 Total = cart.Total,
                 OrderStatus = OrderStatusEnum.Accepted

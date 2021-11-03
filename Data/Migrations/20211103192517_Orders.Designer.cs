@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectronicsStore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211014103955_Orders")]
+    [Migration("20211103192517_Orders")]
     partial class Orders
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,9 +56,6 @@ namespace ElectronicsStore.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -68,8 +65,6 @@ namespace ElectronicsStore.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("StoreItemId");
 
@@ -86,6 +81,9 @@ namespace ElectronicsStore.Data.Migrations
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ShippingAddressId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ShoppingUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -94,9 +92,87 @@ namespace ElectronicsStore.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ShippingAddressId");
+
                     b.HasIndex("ShoppingUserId");
 
                     b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("ElectronicsStore.Models.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StoreItemId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("StoreItemId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("ElectronicsStore.Models.ShippingAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Apartment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Country")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShippingAddress");
                 });
 
             modelBuilder.Entity("ElectronicsStore.Models.ShoppingUser", b =>
@@ -352,10 +428,6 @@ namespace ElectronicsStore.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ElectronicsStore.Models.Order", null)
-                        .WithMany("CartItems")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("ElectronicsStore.Models.StoreItem", "StoreItem")
                         .WithMany("CartItems")
                         .HasForeignKey("StoreItemId")
@@ -369,11 +441,32 @@ namespace ElectronicsStore.Data.Migrations
 
             modelBuilder.Entity("ElectronicsStore.Models.Order", b =>
                 {
+                    b.HasOne("ElectronicsStore.Models.ShippingAddress", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId");
+
                     b.HasOne("ElectronicsStore.Models.ShoppingUser", "ShoppingUser")
                         .WithMany("Orders")
                         .HasForeignKey("ShoppingUserId");
 
+                    b.Navigation("ShippingAddress");
+
                     b.Navigation("ShoppingUser");
+                });
+
+            modelBuilder.Entity("ElectronicsStore.Models.OrderItem", b =>
+                {
+                    b.HasOne("ElectronicsStore.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("ElectronicsStore.Models.StoreItem", "StoreItem")
+                        .WithMany()
+                        .HasForeignKey("StoreItemId");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("StoreItem");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -434,7 +527,7 @@ namespace ElectronicsStore.Data.Migrations
 
             modelBuilder.Entity("ElectronicsStore.Models.Order", b =>
                 {
-                    b.Navigation("CartItems");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("ElectronicsStore.Models.ShoppingUser", b =>

@@ -14,5 +14,6 @@ namespace ElectronicsStore.Data
         {
         }
         public DbSet<ElectronicsStore.Models.StoreItem> StoreItem { get; set; }
+        public DbSet<ElectronicsStore.Models.Order> Order { get; set; }
     }
 }

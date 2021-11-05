@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -32,15 +31,11 @@
                             </ul>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
-                    <form class="d-flex">
-                        <a class="btn btn-outline-light" type="submit" asp-controller="Shop" asp-action="MyCart">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">?</span>
-                        </a>
-                    </form>
                 </div>
+                <ul class="navbar-nav mt-1">
+                    <partial name="_LoginPartial" />
+                    <partial name="_CartPartial" />
+                    </ul>
             </div>
         </nav>
         <nav class="navbar navbar-expand-lg navbar-dark bg-danger">

@@ -43,6 +43,17 @@
                 <p class="text-primary">Price in Euro cents</p>
                 <span asp-validation-for="StoreItem.Price" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+                      <label asp-for="StoreItem.Category" class="control-label"></label>
+            <select asp-for="StoreItem.Category.Id" asp-items="Model.Categories" class="form-control">
+                <option selected="selected" value="">Please select</option>
+            </select>
+            <span asp-validation-for="StoreItem.Category" class="text-danger"></span>
+        </div>*@
+            @Html.DropDownListFor(model => model.SelectedCategory, Model.Categories, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.SelectedCategory, "", new { @class = "text-danger" })
+
+
             <div class="form-group">
                 <label asp-for="StoreItem.itemLocation" class="control-label"></label>
                 <select asp-for="StoreItem.itemLocation" asp-items="Html.GetEnumSelectList<ItemLocation>()" class="form-control">

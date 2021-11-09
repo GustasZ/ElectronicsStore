@@ -18,6 +18,7 @@ namespace ElectronicsStore.Models
         public int Price { get; set; }
         [DisplayName("Shipping Time")]
         public ItemLocation itemLocation { get; set; }
+        public Category Category { get; set; }
         public string ImagePath { get; set; }
         public string Description { get; set; }
 

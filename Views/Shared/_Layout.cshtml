@@ -34,51 +34,18 @@
                 </div>
                 <ul class="navbar-nav mt-1">
                     <partial name="_LoginPartial" />
-                    <partial name="_CartPartial" />
-                    </ul>
+                    @* <partial name="_CartPartial" />*@
+                    <li id="cart-partial" class="nav-item"></li>
+                </ul>
             </div>
         </nav>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
-            <div class="container">
-                <div class="arrow justify-content-center">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Computers, Components</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Periphery, Office equipment</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Home Electronics</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Video Games, Consoles</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            </ul>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Household Appliances</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Other Items</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            </ul>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        @* <partial name="_CategoryPartial" />*@
+        <div id="category-partial"></div>
     </header>
     <div class="container">
         @*   <main role="main" class="pb-3">
-            @RenderBody()
-        </main>*@
+                @RenderBody()
+            </main>*@
         @RenderBody()
     </div>
 
@@ -86,13 +53,54 @@
     <footer class="py-5 bg-dark">
         <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+    <script src="~/js/scripts.js"></script>
+    <script>
+            try {
+            $.ajax({
+                url: '@Url.Action("GetCart","Home")',
+                type: "GET",
+                data:
+                {
+                },
+                success: function (data) {
+                    $('#cart-partial').html(data);
+                },
+                failure: function () {
+                    $('#cart-partial').html('Fail');
+                }
+            })
+        }
+        catch (error) {
+            console.log(error);
+        }
+    </script>
+    <script>
+            try {
+            $.ajax({
+                url: '@Url.Action("GetCategories","Home")',
+                type: "GET",
+                data:
+                {
+                },
+                success: function (data) {
+                    $('#category-partial').html(data);
+                },
+                failure: function () {
+                    $('#category-partial').html('Fail');
+                }
+            })
+        }
+        catch (error) {
+            console.log(error);
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

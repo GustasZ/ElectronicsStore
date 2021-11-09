@@ -51,7 +51,22 @@ namespace ElectronicsStore.Controllers
         // GET: StoreItems/Create
         public IActionResult Create()
         {
-            return View();
+            var categories = _context.Category.Where(c => c.ParentId != 0).ToList();
+            StoreItemViewModel viewModel = new StoreItemViewModel();
+            List<SelectListItem> availableCategories = new List<SelectListItem>();
+            availableCategories.Add(new SelectListItem { Text = "--Select--", Value = "0" });
+            List<SelectListItem> aCategories = categories.ConvertAll(a =>
+           {
+               return new SelectListItem()
+               {
+                   Text = a.Name.ToString(),
+                   Value = a.Id.ToString()
+                  // Selected = false
+               };
+           });
+            availableCategories.AddRange(aCategories);
+            viewModel.Categories = availableCategories;
+            return View(viewModel);
         }
 
         // POST: StoreItems/Create
@@ -75,6 +90,7 @@ namespace ElectronicsStore.Controllers
                     }
                     storeItemVM.StoreItem.ImagePath = Path.Combine("images", "itemImages", fileName);
                 }
+                storeItemVM.StoreItem.Category = _context.Category.Where(c => c.Id == storeItemVM.SelectedCategory).Single();
                 _context.Add(storeItemVM.StoreItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

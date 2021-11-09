@@ -33,6 +33,16 @@ namespace ElectronicsStore.Controllers
             return View(item);
         }
 
+        public async Task<IActionResult> ItemByCategoryList(int? id)
+        {
+            if (id == null)
+                return NotFound();
+            var itemList = await _context.StoreItem.Where(s => s.Category.Id == id).Include(c => c.Category).ToListAsync();
+            if (itemList == null)
+                return NotFound();
+            return View(itemList);
+        }
+
         [Authorize]
         public async Task<IActionResult> AddToCart(int itemId, int quantity)
         {

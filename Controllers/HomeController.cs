@@ -36,6 +36,8 @@ namespace ElectronicsStore.Controllers
         public async Task<IActionResult> GetCart()
         {
             var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(cart => cart.CartItems).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (user == null)
+                return null;
             if (user.Cart == null)
                 user.Cart = new Cart();
 
@@ -43,6 +45,26 @@ namespace ElectronicsStore.Controllers
             return PartialView("_CartPartial", new Cart());
             else
             return PartialView("_CartPartial", user.Cart);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCategories()
+        {
+                List<CategoryViewModel> viewModels = new();
+                var categories = await _context.Category.Where(c => c.ParentId == 0).ToListAsync();
+                foreach (var category in categories)
+                    viewModels.Add(new CategoryViewModel {TopCategory = category });
+                foreach (var topCategory in viewModels)
+                {
+                    topCategory.AddSubCategories(_context.Category.Where(c => c.ParentId == topCategory.TopCategory.Id).ToList());
+         /*           foreach (var sCategory in topCategory.Categories)
+                    {
+                        topCategory.AddSubCategories(_context.Category.Where(c => c.ParentId == sCategory.Id).ToList());
+                    }*/
+                }
+        //    var categories = await _context.Category.ToListAsync();
+
+            return PartialView("_CategoryPartial", viewModels);
         }
 
 

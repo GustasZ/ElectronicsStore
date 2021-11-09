@@ -4,14 +4,16 @@ using ElectronicsStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ElectronicsStore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211109105508_Categories")]
+    partial class Categories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,128 +87,6 @@ namespace ElectronicsStore.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Computers and Components",
-                            ParentId = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Office Equipment",
-                            ParentId = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Home Electronics",
-                            ParentId = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Communication Equipment",
-                            ParentId = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Video Games and Consoles",
-                            ParentId = 0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Household Appliances",
-                            ParentId = 0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Other Items",
-                            ParentId = 0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Laptops",
-                            ParentId = 1
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Tablets",
-                            ParentId = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Computer Components",
-                            ParentId = 1
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Monitors",
-                            ParentId = 2
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Mice",
-                            ParentId = 2
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Keyboards",
-                            ParentId = 2
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "TVs",
-                            ParentId = 3
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "Speakers",
-                            ParentId = 3
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "Phones",
-                            ParentId = 4
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "Consoles",
-                            ParentId = 5
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Name = "Video Games",
-                            ParentId = 5
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Name = "Coffee Machines",
-                            ParentId = 6
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Name = "Car Equipment",
-                            ParentId = 7
-                        });
                 });
 
             modelBuilder.Entity("ElectronicsStore.Models.Order", b =>

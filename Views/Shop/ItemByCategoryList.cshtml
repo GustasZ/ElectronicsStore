@@ -1,64 +1,54 @@
-﻿@model IEnumerable<ElectronicsStore.Models.StoreItem>
+﻿@model ElectronicsStore.Models.StoreItemsByCategoryViewModel
 
-<h1>todo</h1>
+<h1>@Model.CategoryName</h1>
 <table class="table">
-    <thead>
+    <thead class="thead-dark">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductCode)
+                Image
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.StoreItems[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.StoreItems[0].AvailableQuantity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WarrantyInMonths)
+                @Html.DisplayNameFor(model => model.StoreItems[0].Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AvailableQuantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.itemLocation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
+
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.StoreItems)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductCode)
-                </td>
-                <td>
+        <tr>
+
+            <td>
+                <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
+                    <img class="card-img-top mb-5 mb-md-0" style="max-height: 140px; max-width:200px" src="~/@item.ImagePath" alt="..." />
+                </a>
+            </td>
+            <td class="col-5">
+                <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
                     @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WarrantyInMonths)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AvailableQuantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.itemLocation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImagePath)
-                </td>
-            </tr>
+                </a>
+            </td>
+            <td>
+                @item.GetQuantity()
+            </td>
+            <td>
+                @item.GetPrice()
+            </td>
+            <td>
+                <form asp-action="AddToCart" asp-controller="Shop" asp-route-itemId="@item.Id" asp-route-quantity="1">
+                    <i class="bi-cart-fill me-1"></i>
+                    <input type="submit" value="Add to cart" class="btn btn-outline-dark flex-shrink-0" />
+                </form>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

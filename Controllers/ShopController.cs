@@ -27,20 +27,28 @@ namespace ElectronicsStore.Controllers
         {
             if (id == null)
                 return NotFound();
-            var item = await _context.StoreItem.FindAsync(id);
+            var item = await _context.StoreItem.Include(s=> s.Category).FirstOrDefaultAsync(x => x.Id == id);
             if (item == null)
                 return NotFound();
-            return View(item);
+
+            var relatedItems = await _context.StoreItem.Where(s => s.Category.Id == item.Category.Id).Where(s => s.Id != item.Id).Take(4).ToListAsync();
+
+            StoreItemInfoViewModel itemViewModel = new();
+
+            itemViewModel.StoreItem = item;
+            if (relatedItems != null)
+                itemViewModel.RelatedStoreItems = relatedItems;
+            return View(itemViewModel);
         }
 
-        public async Task<IActionResult> ItemByCategoryList(int? id)
+        public async Task<IActionResult> ItemByCategoryList(int id)
         {
-            if (id == null)
-                return NotFound();
+            var viewModel = new StoreItemsByCategoryViewModel();
             var itemList = await _context.StoreItem.Where(s => s.Category.Id == id).Include(c => c.Category).ToListAsync();
-            if (itemList == null)
-                return NotFound();
-            return View(itemList);
+            viewModel.StoreItems = itemList;
+            var category = await _context.Category.Where(c => c.Id == id).FirstOrDefaultAsync();
+            viewModel.CategoryName = category.Name;
+            return View(viewModel);
         }
 
         [Authorize]

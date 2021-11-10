@@ -52,8 +52,8 @@ namespace ElectronicsStore.Controllers
         public IActionResult Create()
         {
             var categories = _context.Category.Where(c => c.ParentId != 0).ToList();
-            StoreItemViewModel viewModel = new StoreItemViewModel();
-            List<SelectListItem> availableCategories = new List<SelectListItem>();
+            StoreItemViewModel viewModel = new();
+            List<SelectListItem> availableCategories = new();
             availableCategories.Add(new SelectListItem { Text = "--Select--", Value = "0" });
             List<SelectListItem> aCategories = categories.ConvertAll(a =>
            {

@@ -51,7 +51,7 @@ namespace ElectronicsStore.Controllers
         // GET: StoreItems/Create
         public IActionResult Create()
         {
-            var categories = _context.Category.Where(c => c.ParentId != 0).ToList();
+            var categories = _context.Category.ToList();
             StoreItemViewModel viewModel = new();
             List<SelectListItem> availableCategories = new();
             availableCategories.Add(new SelectListItem { Text = "--Select--", Value = "0" });

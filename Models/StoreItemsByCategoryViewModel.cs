@@ -8,6 +8,6 @@ namespace ElectronicsStore.Models
     public class StoreItemsByCategoryViewModel
     {
         public List<StoreItem> StoreItems { get; set; } = new List<StoreItem>();
-        public string CategoryName { get; set; }
+        public List<Category> Categories { get; set; } = new List<Category>();
     }
 }

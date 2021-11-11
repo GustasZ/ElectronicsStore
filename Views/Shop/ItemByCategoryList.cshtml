@@ -3,7 +3,11 @@
 <h2>
     @foreach (var category in Model.Categories)
     {
-    <a asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@category.Id">@category.Name</a> <span>></span>
+    <a asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@category.Id">@category.Name</a> 
+    @if (category != Model.Categories.Last())          
+        {
+    <span>></span>
+        }
     }
 </h2>
 

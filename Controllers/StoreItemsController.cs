@@ -27,7 +27,7 @@ namespace ElectronicsStore.Controllers
         // GET: StoreItems
         public async Task<IActionResult> Index()
         {
-            return View(await _context.StoreItem.ToListAsync());
+            return View(await _context.StoreItem.Include(s => s.Category).ToListAsync());
         }
 
         // GET: StoreItems/Details/5
@@ -51,17 +51,24 @@ namespace ElectronicsStore.Controllers
         // GET: StoreItems/Create
         public IActionResult Create()
         {
-            var categories = _context.Category.ToList();
+            var categories = _context.Category.Where(c => c.ParentId != 0).ToList();
             StoreItemViewModel viewModel = new();
             List<SelectListItem> availableCategories = new();
             availableCategories.Add(new SelectListItem { Text = "--Select--", Value = "0" });
+
+            foreach(var category in categories) // while looking for the right category, its good to know the parent category
+            {
+                var parentCategory = _context.Category.Where(c => c.Id == category.ParentId).SingleOrDefault();
+                var fullName = $"{parentCategory.Name} > {category.Name}";
+                category.Name = fullName;
+            }
+
             List<SelectListItem> aCategories = categories.ConvertAll(a =>
            {
                return new SelectListItem()
                {
                    Text = a.Name.ToString(),
                    Value = a.Id.ToString()
-                  // Selected = false
                };
            });
             availableCategories.AddRange(aCategories);

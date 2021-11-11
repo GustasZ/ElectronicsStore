@@ -61,11 +61,11 @@ namespace ElectronicsStore.Controllers
             // get items from current category and any childs the category has
 
             var currentCategory = mainCategory;
-            List<Category> categoryChildren = new List<Category>();
+            List<Category> categoryChildren = new();
             List<Category> categoryTier = new();
             List<Category> categoryTierTemp = new();
             categoryTier.Add(currentCategory);
-            while (categoryTier.Count() != 0)
+            while (categoryTier.Count != 0)
             {
                 categoryChildren.AddRange(categoryTier);
                 foreach(var category in categoryTier)

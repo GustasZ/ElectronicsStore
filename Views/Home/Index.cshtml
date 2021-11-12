@@ -3,40 +3,41 @@
     ViewData["Title"] = "Home Page";
 }
 <body>
-
-    <!-- Header-->
-    <header class="bg-dark py-5">
+    <header class="bg-success py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">The Greatest Electronic Store!</h1>
+                <h1 class="display-4 fw-bolder">The Greatest Electronics Store!</h1>
                 <p class="lead fw-normal text-white-50 mb-0">If it needs electricity, we have it!</p>
             </div>
         </div>
     </header>
-    <!-- Section-->
-    <section class="py-5">
+
+    <section>
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 @foreach (var item in Model)
                 {
                     <div class="col mb-5">
-                        <div class="card h-100">
+                        <div class="card mb-4 box-shadow h-100">
                             <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
-                                <!-- Product image-->
-                                <img class="card-img-top" src="~/@item.ImagePath" alt="450x300..." />
-                                <!-- Product details-->
-                                <div class="card-body p-4">
-                                    <div class="text-center">
-                                        <!-- Product name-->
-                                        <h5 class="fw-bolder">@item.Name</h5>
-                                        <!-- Product price-->
-                                        @item.GetPrice()
-                                    </div>
-                                </div>
+                                <img class="card-img-top" src="~/@item.ImagePath" alt="450x300..." style="height: 300px" />
                             </a>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to Cart</a></div>
+                            <div class="card-body d-flex flex-column p-4">
+                                <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
+                                    <div class="text-center">
+                                        <h5 class="fw-bolder">@item.Name</h5>
+                                    </div>
+                                </a>
+                                </div>
+                            <div class="card-footer text-center">
+                                <h4>@item.GetPrice()</h4>
+                                <a asp-action="AddToCart" asp-controller="Shop" asp-route-itemId="@item.Id" asp-route-quantity="1">
+                                    <div class="mt-auto btn btn-outline-dark">
+                                        <i class="bi-cart-fill me-1 "></i>
+                                        Add to cart
+                                        @*<input type="submit" class="flex-shrink-0" />*@
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -27,20 +27,63 @@ namespace ElectronicsStore.Controllers
         {
             if (id == null)
                 return NotFound();
-            var item = await _context.StoreItem.FindAsync(id);
+            var item = await _context.StoreItem.Include(s=> s.Category).FirstOrDefaultAsync(x => x.Id == id);
             if (item == null)
                 return NotFound();
-            return View(item);
+
+            var relatedItems = await _context.StoreItem.Where(s => s.Category.Id == item.Category.Id).Where(s => s.Id != item.Id).Take(4).ToListAsync();
+
+            StoreItemInfoViewModel itemViewModel = new();
+
+            itemViewModel.StoreItem = item;
+            if (relatedItems != null)
+                itemViewModel.RelatedStoreItems = relatedItems;
+            return View(itemViewModel);
         }
 
-        public async Task<IActionResult> ItemByCategoryList(int? id)
+        public async Task<IActionResult> ItemByCategoryList(int id)
         {
-            if (id == null)
-                return NotFound();
-            var itemList = await _context.StoreItem.Where(s => s.Category.Id == id).Include(c => c.Category).ToListAsync();
-            if (itemList == null)
-                return NotFound();
-            return View(itemList);
+            var viewModel = new StoreItemsByCategoryViewModel();
+
+            var mainCategory = await _context.Category.Where(c => c.Id == id).FirstOrDefaultAsync();
+            var itemCategory = mainCategory;
+            List<Category> categoryPath = new();
+            categoryPath.Add(itemCategory);
+            while(itemCategory.ParentId != 0)
+            {
+                itemCategory = await _context.Category.Where(c => c.Id == itemCategory.ParentId).FirstOrDefaultAsync();
+                categoryPath.Add(itemCategory);
+            }
+            categoryPath.Reverse();
+            viewModel.Categories = categoryPath; // Parent category -> child category -> current category
+
+
+            // get items from current category and any childs the category has
+
+            var currentCategory = mainCategory;
+            List<Category> categoryChildren = new();
+            List<Category> categoryTier = new();
+            List<Category> categoryTierTemp = new();
+            categoryTier.Add(currentCategory);
+            while (categoryTier.Count != 0)
+            {
+                categoryChildren.AddRange(categoryTier);
+                foreach(var category in categoryTier)
+                {
+                    categoryTierTemp.AddRange(await _context.Category.Where(c => c.ParentId == category.Id).ToListAsync());
+                }
+                categoryTier = categoryTierTemp;
+                categoryTierTemp = new();
+            }
+
+            List<StoreItem> storeItems = new();
+            foreach(var childCategory in categoryChildren)
+            {
+                storeItems.AddRange(await _context.StoreItem.Where(s => s.Category.Id == childCategory.Id).ToListAsync());
+            }
+            viewModel.StoreItems = storeItems;
+
+            return View(viewModel);
         }
 
         [Authorize]

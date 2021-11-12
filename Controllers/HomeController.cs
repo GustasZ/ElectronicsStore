@@ -37,13 +37,10 @@ namespace ElectronicsStore.Controllers
         {
             var user = await _userManager.Users.Include(u => u.Cart).ThenInclude(cart => cart.CartItems).SingleOrDefaultAsync(x => x.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (user == null)
-                return null;
+                return PartialView("_CartPartial", new Cart());
             if (user.Cart == null)
                 user.Cart = new Cart();
 
-            if (user == null)
-            return PartialView("_CartPartial", new Cart());
-            else
             return PartialView("_CartPartial", user.Cart);
         }
 

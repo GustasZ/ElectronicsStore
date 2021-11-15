@@ -1,10 +1,10 @@
 ﻿@model ElectronicsStore.Models.StoreItemsByCategoryViewModel
 
 <h2>
-    @foreach (var category in Model.Categories)
+    @foreach (var category in Model.CategoryPath)
     {
     <a asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@category.Id">@category.Name</a> 
-    @if (category != Model.Categories.Last())          
+    @if (category != Model.CategoryPath.Last())          
         {
     <span>></span>
         }

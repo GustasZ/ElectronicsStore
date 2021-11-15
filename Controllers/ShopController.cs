@@ -55,19 +55,23 @@ namespace ElectronicsStore.Controllers
                 categoryPath.Add(itemCategory);
             }
             categoryPath.Reverse();
-            viewModel.Categories = categoryPath; // Parent category -> child category -> current category
+            viewModel.CategoryPath = categoryPath; // Parent category -> child category -> current category
 
 
             // get items from current category and any childs the category has
 
             var currentCategory = mainCategory;
+            List<Category> categoryAllChildren = new();
             List<Category> categoryChildren = new();
             List<Category> categoryTier = new();
             List<Category> categoryTierTemp = new();
+
+            categoryChildren.AddRange(await _context.Category.Where(c => c.ParentId == mainCategory.Id).ToListAsync());
+
             categoryTier.Add(currentCategory);
             while (categoryTier.Count != 0)
             {
-                categoryChildren.AddRange(categoryTier);
+                categoryAllChildren.AddRange(categoryTier);
                 foreach(var category in categoryTier)
                 {
                     categoryTierTemp.AddRange(await _context.Category.Where(c => c.ParentId == category.Id).ToListAsync());
@@ -77,13 +81,22 @@ namespace ElectronicsStore.Controllers
             }
 
             List<StoreItem> storeItems = new();
-            foreach(var childCategory in categoryChildren)
+            foreach (var childCategory in categoryAllChildren)
             {
                 storeItems.AddRange(await _context.StoreItem.Where(s => s.Category.Id == childCategory.Id).ToListAsync());
             }
             viewModel.StoreItems = storeItems;
 
-            return View(viewModel);
+            viewModel.ChildCategories = categoryChildren;
+
+            if (categoryChildren.Count == 0)
+                return View("ItemsByCategoryList", viewModel);
+            else
+            {
+                var previewItems = viewModel.StoreItems.OrderBy(x => Guid.NewGuid()).Take(4).ToList(); // randomly take 4 items out of all child categories, to show them as a preview
+                viewModel.StoreItems = previewItems;
+                return View("ItemsByCategoryListPreview", viewModel);
+            }
         }
 
         [Authorize]

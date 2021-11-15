@@ -20,7 +20,7 @@ namespace ElectronicsStore.Data.Migrations
                     { 13, "Keyboards", 2 },
                     { 12, "Mice", 2 },
                     { 11, "Monitors", 2 },
-                    { 10, "Computer Components", 1 },
+                    { 10, "PC Parts", 1 },
                     { 9, "Tablets", 1 },
                     { 8, "Laptops", 1 },
                     { 7, "Other Items", 0 },
@@ -30,7 +30,9 @@ namespace ElectronicsStore.Data.Migrations
                     { 3, "Home Electronics", 0 },
                     { 2, "Office Equipment", 0 },
                     { 19, "Coffee Machines", 6 },
-                    { 20, "Car Equipment", 7 }
+                    { 20, "Car Equipment", 7 },
+                    { 21, "GPUs", 10 },
+                    { 22, "CPUs", 10 }
                 });
         }
 

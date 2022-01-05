@@ -54,12 +54,20 @@ namespace ElectronicsStore.Controllers
                 foreach (var topCategory in viewModels)
                 {
                     topCategory.AddSubCategories(_context.Category.Where(c => c.ParentId == topCategory.TopCategory.Id).ToList());
-         /*           foreach (var sCategory in topCategory.Categories)
-                    {
-                        topCategory.AddSubCategories(_context.Category.Where(c => c.ParentId == sCategory.Id).ToList());
-                    }*/
+                foreach (var subCategory in topCategory.SubCategories)
+                {
+                    topCategory.AddSubSubCategories(_context.Category.Where(c => c.ParentId == subCategory.Id).ToList());
                 }
-        //    var categories = await _context.Category.ToListAsync();
+
+
+
+                /*           foreach (var sCategory in topCategory.Categories)
+                           {
+                               topCategory.AddSubCategories(_context.Category.Where(c => c.ParentId == sCategory.Id).ToList());
+                           }*/
+            }
+
+            //    var categories = await _context.Category.ToListAsync();
 
             return PartialView("_CategoryPartial", viewModels);
         }

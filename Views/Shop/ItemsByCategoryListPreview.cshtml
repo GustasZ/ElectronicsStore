@@ -1,0 +1,48 @@
+﻿@model ElectronicsStore.Models.StoreItemsByCategoryViewModel
+
+    @foreach (var category in Model.CategoryPath)
+    {
+        <a asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@category.Id">@category.Name</a>
+        @if (category != Model.CategoryPath.Last())
+        {
+            <span>></span>
+        }
+    }
+
+<div class="mt-5">
+    <h1 class="fw-bolder ">Please choose a category</h1>
+    @foreach (var childCategory in Model.ChildCategories)
+    {
+        <a asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@childCategory.Id" class="btn btn-primary btn-lg">@childCategory.Name</a>
+    }
+</div>
+
+
+<section class="bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            @foreach (var item in Model.StoreItems)
+            {
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
+                            <img class="card-img-top" src="~/@item.ImagePath" alt="450x300..." style="height: 300px" />
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder">@item.Name</h5>
+                                    @item.GetPrice()
+                                </div>
+                            </div>
+                        </a>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent text-center">
+                            <i class="bi-cart-fill me-1"></i>
+                            <form asp-action="AddToCart" asp-controller="Shop" asp-route-itemId="@item.Id" asp-route-quantity="1">
+                                <input type="submit" value="Add to cart" class="btn btn-outline-dark flex-shrink-0" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

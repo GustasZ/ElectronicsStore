@@ -21,7 +21,7 @@ namespace ElectronicsStore.Models
         public Category Category { get; set; }
         public string ImagePath { get; set; }
         public string Description { get; set; }
-
+        public List<MoreInfo> MoreItemInfo { get; set; } = new List<MoreInfo>();
         public List<CartItem> CartItems { get; set; }
 
         public string GetPrice()

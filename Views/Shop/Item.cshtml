@@ -11,7 +11,7 @@
                 <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="~/@Model.StoreItem.ImagePath" alt="..." /></div>
                 <div class="col-md-6">
                     <div class="small mb-1"></div>
-                    <h1 class="display-5 fw-bolder">@Html.DisplayFor(model => model.StoreItem.Name);</h1>
+                    <h1 class="display-5 fw-bolder">@Html.DisplayFor(model => model.StoreItem.Name)</h1>
                     <ul class="list-unstyled fs-5 mb-5">
                             <li class="text-decoration font-weight-bold">@Model.StoreItem.GetPrice()</li>
                         <li class="text-decoration">Available: @Model.StoreItem.GetQuantity()</li>
@@ -60,4 +60,22 @@
             </div>
         </div>
     </section>
+
+    <section>
+        <h2 class="fw-bolder mb-4">Product Information</h2>
+        <div class="col-6">
+        <table class="table table-bordered">
+        <tbody>
+        @foreach(var infoCol in Model.StoreItem.MoreItemInfo)
+        {
+            <tr>
+            <td class="col-3 bg-light">@infoCol.Name</td>
+            <td class="col-3">@infoCol.Text</td>
+            </tr>
+        }
+        </tbody>
+        </table>
+        </div>
+    </section>
+
 </body>

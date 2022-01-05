@@ -56,14 +56,30 @@ namespace ElectronicsStore.Controllers
             List<SelectListItem> availableCategories = new();
             availableCategories.Add(new SelectListItem { Text = "--Select--", Value = "0" });
 
+
+            var smallestCategories = new List<Category>(); // categories, that have no children
+            bool doStuff = true;
             foreach(var category in categories) // while looking for the right category, its good to know the parent category
             {
-                var parentCategory = _context.Category.Where(c => c.Id == category.ParentId).SingleOrDefault();
-                var fullName = $"{parentCategory.Name} > {category.Name}";
-                category.Name = fullName;
+                doStuff = true;
+                foreach (var xCategory in categories)
+                {
+                    if(category.Id == xCategory.ParentId && !xCategory.Equals(category))
+                    {
+                        doStuff = false;
+                        break;
+                    }
+                }
+                if (doStuff)
+                {
+                    var parentCategory = _context.Category.Where(c => c.Id == category.ParentId).SingleOrDefault();
+                    var fullName = $"{parentCategory.Name} > {category.Name}";
+                    category.Name = fullName;
+                    smallestCategories.Add(category);
+                }
             }
 
-            List<SelectListItem> aCategories = categories.ConvertAll(a =>
+            List<SelectListItem> aCategories = smallestCategories.ConvertAll(a =>
            {
                return new SelectListItem()
                {

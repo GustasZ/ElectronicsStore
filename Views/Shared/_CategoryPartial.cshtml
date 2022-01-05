@@ -2,54 +2,65 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
         <div class="container">
             <div class="arrow justify-content-center">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <div class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     @foreach (var item in Model)
                     {
                         {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">@item.TopCategory.Name</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @foreach (var subCategory in item.SubCategories)
-                                {
-                                    @if (subCategory.ParentId == item.TopCategory.Id)
-                                    {
-                                <li><a class="dropdown-item" asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@subCategory.Id">@subCategory.Name</a></li>
-                                    }
-                                }
-                            </ul>
-                        </li>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">@item.TopCategory.Name</a>
+                                <div class="dropdown-menu dropdown-multicol" aria-labelledby="navbarDropdown">
+                                        @foreach (var subCategory in item.SubCategories)
+                                        {
+                                            @if (subCategory.ParentId == item.TopCategory.Id)
+                                            {
+                                        <div class="dropdown-row">
+                                            <a class="dropdown-item fw-bold" asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@subCategory.Id">@subCategory.Name</a>
+                                            @foreach (var subSubCategory in item.SubSubCategories)
+                                            {
+                                                @if (subSubCategory.ParentId == subCategory.Id)
+                                                {
+                                                    <a class="dropdown-item" asp-action="ItemByCategoryList" asp-controller="Shop" asp-route-id="@subSubCategory.Id">@subSubCategory.Name</a>
+                                                }
+                                            }
+                                        </div>
+                                                    }
+                                                    
+                                                    }
+                                            </div>
+                            </div>
                         }
                     }
+
                     @*   <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Computers, Components</a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Periphery, Office equipment</a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Home Electronics</a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Video Games, Consoles</a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            </ul>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Household Appliances</a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Other Items</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    </ul>
-                    *@
+                <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Computers, Components</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Periphery, Office equipment</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Home Electronics</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Video Games, Consoles</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                </ul>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Household Appliances</a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-light btn-dark" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">Other Items</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        </ul>
+                    *@
+                </div>
             </div>
         </div>
     </nav>

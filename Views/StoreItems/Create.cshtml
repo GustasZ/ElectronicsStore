@@ -9,7 +9,7 @@
 <h4>StoreItem</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -26,6 +26,13 @@
                 <label asp-for="StoreItem.Description" class="control-label"></label>
                 <input asp-for="StoreItem.Description" class="form-control" />
                 <span asp-validation-for="StoreItem.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StoreItem.MoreItemInfo" class="control-label"></label>
+                <div class="moreInformation">
+                </div>
+                <span asp-validation-for="StoreItem.MoreItemInfo" class="text-danger"></span>
+            <input type="button" value = "Add Column" id="btnAdd"/>
             </div>
             <div class="form-group">
                 <label asp-for="StoreItem.WarrantyInMonths" class="control-label"></label>
@@ -71,11 +78,10 @@
                         </dt>
                         <dd>
                             <input asp-for="FormFile" type="file">
-                            <span asp-validation-for="FormFile"></span>
+                            <span asp-validation-for="FormFile" class="text-danger"></span>
                         </dd>
                     </dl>
                 </div>
-
 
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
@@ -90,4 +96,14 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        var size = 0;
+        $("#btnAdd").click(function(){
+             $(".moreInformation").append("<div class='row'> <input type='text' name='StoreItem.MoreItemInfo["+size+"].Name' class='form-control col' placeholder = 'Name' /> <input type='text' name='StoreItem.MoreItemInfo["+size+"].Text' class='form-control col' placeholder = 'Text' /> </div>");
+             size++;
+        })
+    })
+</script>
 }

@@ -27,7 +27,7 @@ namespace ElectronicsStore.Controllers
         {
             if (id == null)
                 return NotFound();
-            var item = await _context.StoreItem.Include(s=> s.Category).FirstOrDefaultAsync(x => x.Id == id);
+            var item = await _context.StoreItem.Include(s=> s.Category).Include(k => k.MoreItemInfo).FirstOrDefaultAsync(x => x.Id == id);
             if (item == null)
                 return NotFound();
 

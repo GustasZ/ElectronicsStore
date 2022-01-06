@@ -214,5 +214,11 @@ namespace ElectronicsStore.Controllers
             return RedirectToAction("MyCart");
         }
 
+        public async Task<IActionResult> ItemsSearch(string name)
+        {
+            ViewData["searchString"] = name;
+            return View(await _context.StoreItem.Where(x => x.Name.Contains(name)).ToListAsync());
+        }
+
     }
 }

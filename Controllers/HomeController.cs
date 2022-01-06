@@ -72,7 +72,6 @@ namespace ElectronicsStore.Controllers
             return PartialView("_CategoryPartial", viewModels);
         }
 
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

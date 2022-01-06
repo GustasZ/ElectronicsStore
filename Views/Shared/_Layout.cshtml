@@ -16,10 +16,21 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Yet Another Electronics Store</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Yet Another Electronics Store</a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                                        <form method="post" action="/Shop/ItemsSearch">
+                        <div class="input-group mb-1 mt-4">
+                            <input type="text" name="name" style="width:500px;"/>
+                            <div class="input-group-append">
+                                <button type="submit" value="Search" class="btn btn-outline-light" >
+                                <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                   <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -28,15 +39,14 @@
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" href="#!">Popular Items</a></li>
                                 <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            </ul>
+                            </ul> 
                         </li>
-                    </ul>
-                </div>
-                <ul class="navbar-nav mt-1">
+                    </ul>-->
+                 <ul class="navbar-nav mt-3">
                     <partial name="_LoginPartial" />
-                    @* <partial name="_CartPartial" />*@
                     <li id="cart-partial" class="nav-item"></li>
                 </ul>
+                </div>
             </div>
         </nav>
         @* <partial name="_CategoryPartial" />*@

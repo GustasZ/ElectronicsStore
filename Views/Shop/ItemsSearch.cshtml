@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ElectronicsStore.Models.StoreItem>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Image
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().AvailableQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Price)
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
+                        <img class="card-img-top mb-5 mb-md-0" style="max-height: 140px; max-width:200px" src="~/@item.ImagePath" alt="..." />
+                    </a>
+                </td>
+                <td class="col-5">
+                    <a asp-controller="Shop" asp-action="Item" asp-route-id="@item.Id">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </a>
+                </td>
+                <td>
+                    @item.GetQuantity()
+                </td>
+                <td>
+                    @item.GetPrice()
+                </td>
+                <td>
+                    <form asp-action="AddToCart" asp-controller="Shop" asp-route-itemId="@item.Id" asp-route-quantity="1">
+                        <i class="bi-cart-fill me-1"></i>
+                        <input type="submit" value="Add to cart" class="btn btn-outline-dark flex-shrink-0" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

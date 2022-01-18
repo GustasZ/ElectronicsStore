@@ -1,0 +1,43 @@
+﻿@model ElectronicsStore.Models.UserViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ShoppingUsers</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShoppingUser.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShoppingUser.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShoppingUser.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShoppingUser.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ShoppingUser.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ShoppingUser.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CurrentRoles)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CurrentRoles)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="EditRoles" asp-route-id="@Model.ShoppingUser.Id">Edit Roles</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

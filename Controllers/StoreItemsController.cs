@@ -157,7 +157,7 @@ namespace ElectronicsStore.Controllers
             {
                 try
                 {
-                    if (storeItemVM.FormFile.Length > 0)
+                    if (storeItemVM.FormFile != null)
                     {
                         var fileName = GetUniqueFileName(storeItemVM.FormFile.FileName);
                         var uploads = Path.Combine(_hostEnvironment.WebRootPath, "images", "itemImages");

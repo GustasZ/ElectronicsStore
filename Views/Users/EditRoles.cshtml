@@ -1,0 +1,55 @@
+﻿@model ElectronicsStore.Models.UserViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "EditRoles";
+}
+
+<h1>Edit Roles</h1>
+<hr />
+<div class="row">
+    <form method="post" asp-action="EditRoles">
+
+                    <div class="form-group">
+                <label asp-for="ShoppingUser.UserName" class="control-label"></label>
+                <input asp-for="ShoppingUser.UserName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingUser.Id" class="control-label"></label>
+                <input asp-for="ShoppingUser.Id" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ShoppingUser.Email" class="control-label"></label>
+                <input asp-for="ShoppingUser.Email" class="form-control" />
+            </div>
+
+        @foreach(var role in Model.AvailableRoles)
+        {
+
+            <div class="form-check">
+                <label class="form-check-label">
+                  <input type="checkbox"
+                               name="CurrentRoles"
+                               value="@role"
+                               @if(Model.CurrentRoles.Contains(role))
+                               {
+                                   <text> checked </text> 
+                               } 
+                               /> @role
+                </label>
+            </div>
+        }
+
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-primary" value="Submit" />
+            </div>
+        </form>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

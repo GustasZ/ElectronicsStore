@@ -1,9 +1,11 @@
 ﻿using ElectronicsStore.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectronicsStore.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator")]
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;

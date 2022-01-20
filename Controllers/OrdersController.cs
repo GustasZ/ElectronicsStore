@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ElectronicsStore.Data;
 using ElectronicsStore.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ElectronicsStore.Controllers
 {
+    [Authorize(Roles = "Admin,Moderator")]
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;

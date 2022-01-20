@@ -11,15 +11,13 @@ using System.Threading.Tasks;
 
 namespace ElectronicsStore.Controllers
 {
-    public class UserController : Controller
+    public class ProfileController : Controller
     {
-        private readonly UserManager<ShoppingUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public UserController(ApplicationDbContext context,UserManager<ShoppingUser> userManager)
+        public ProfileController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
         public async Task<IActionResult> MyOrders()
         {

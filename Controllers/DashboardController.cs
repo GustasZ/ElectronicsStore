@@ -1,7 +1,13 @@
 ﻿using ElectronicsStore.Data;
+using ElectronicsStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ElectronicsStore.Controllers
 {
@@ -19,6 +25,26 @@ namespace ElectronicsStore.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public async Task<ActionResult> OrderStats()
+        {
+            var allOrders = await _context.Order.ToListAsync();
+            var chartLabel = "Orders";
+            int lines = 10;
+
+            int[] data = new int[lines];
+            string[] labels = new string[lines];
+
+            DateTime todayStart = DateTime.Today.AddDays(-lines + 1);
+            for (int i = 0; i < lines; i++)
+            {
+                var dayOrders = allOrders.Where(x => x.CreatedDate.Date == todayStart.AddDays(i).Date).ToList();
+                data[i] = dayOrders.Count();
+                labels[i] = todayStart.AddDays(i).Date.ToString("M");
+            }
+
+          return new JsonResult(new { myData = data, myLabels = labels, myChartLabel = chartLabel });
         }
 
         public ActionResult Users()

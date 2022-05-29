@@ -203,7 +203,8 @@ namespace ElectronicsStore.Controllers
                 //ShoppingUserId = cart.ShoppingUserId,
                 ShoppingUser = cart.ShoppingUser,
                 Total = cart.Total,
-                OrderStatus = OrderStatusEnum.Accepted
+                OrderStatus = OrderStatusEnum.Accepted,
+                CreatedDate = DateTime.Now
             };
 
             _context.Remove(user.Cart);

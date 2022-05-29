@@ -16,6 +16,6 @@ namespace ElectronicsStore.Models
 
         public int Total { get; init; }
         public OrderStatusEnum OrderStatus { get; set; }
-
+        public DateTime CreatedDate { get; set; }
     }
 }

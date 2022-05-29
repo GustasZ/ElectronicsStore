@@ -13,6 +13,12 @@
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="~/css/adminlte.min.css">
+
+  <script src="~/plugins/jquery/jquery.min.js"></script>
+  <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="~/js/adminlte.js"></script>
+  <script src="~/plugins/chart.js/Chart.js"></script>
+  <script src="~/plugins/chart.js/Chart.min.js"></script>
 </head>
 <!--
 `body` tag options:
@@ -104,7 +110,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="#" class="brand-link">
       <img src="~/images/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">AdminLTE 3</span>
     </a>
@@ -207,20 +213,6 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
-<script src="~/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap -->
-<script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE -->
-<script src="~/js/adminlte.js"></script>
-
-<script src="~/plugins/chart.js/Chart.js"></script>
-
-<!-- OPTIONAL SCRIPTS -->
-<script src="~/plugins/chart.js/Chart.min.js"></script>
-
-@await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
